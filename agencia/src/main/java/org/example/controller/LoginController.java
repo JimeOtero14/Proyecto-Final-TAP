@@ -12,7 +12,7 @@ public class LoginController {
             SELECT e.* 
             FROM usuario u 
             INNER JOIN empleado e ON u.idEmpleado = e.idEmpleado 
-            WHERE u.user = ? AND u.contraseña = ? AND e.estado = 'AC'
+            WHERE u.username = ? AND u.contraseña = ? AND e.estado = 'AC'
             """;
 
         try (Connection conexion = DatabaseConnection.getConnection();
