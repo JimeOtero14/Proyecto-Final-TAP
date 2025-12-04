@@ -12,6 +12,8 @@ import org.example.controller.LoginController;
 import org.example.database.DatabaseConnection;
 import org.example.model.Empleado;
 
+import java.lang.classfile.Label;
+
 public class LoginView {
     private GridPane panelRaiz;
     private TextField campoUsuario;
