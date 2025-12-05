@@ -109,23 +109,11 @@ public class LoginView {
         ventanaActual.close();
 
         Stage ventanaPrincipal = new Stage();
-        VBox layoutPrincipal = new VBox(10);
-        layoutPrincipal.setPadding(new Insets(20));
+        MainView vistaPrincipal = new MainView(empleado);
 
-        Label etiquetaBienvenida = new Label("Bienvenido: " + empleado.getNombreCompleto());
-        Label etiquetaPuesto = new Label("Puesto: " + empleado.getPuesto());
-
-        Button botonCerrarSesion = new Button("Cerrar Sesión");
-        botonCerrarSesion.setOnAction(evento -> {
-            ventanaPrincipal.close();
-            mostrarLogin();
-        });
-
-        layoutPrincipal.getChildren().addAll(etiquetaBienvenida, etiquetaPuesto, botonCerrarSesion);
-
-        Scene escena = new Scene(layoutPrincipal, 800, 600);
+        Scene escena = vistaPrincipal.crearEscena();
         ventanaPrincipal.setScene(escena);
-        ventanaPrincipal.setTitle("Panel Principal - " + empleado.getNombre());
+        ventanaPrincipal.setTitle("Sistema de Agencia de Autos");
         ventanaPrincipal.show();
     }
 
