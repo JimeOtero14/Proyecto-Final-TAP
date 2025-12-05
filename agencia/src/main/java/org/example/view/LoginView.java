@@ -1,5 +1,5 @@
 package org.example.view;
-//lol
+
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -11,8 +11,6 @@ import javafx.stage.Stage;
 import org.example.controller.LoginController;
 import org.example.database.DatabaseConnection;
 import org.example.model.Empleado;
-
-import java.lang.classfile.Label;
 
 public class LoginView {
     private GridPane panelRaiz;
@@ -111,13 +109,27 @@ public class LoginView {
         ventanaActual.close();
 
         Stage ventanaPrincipal = new Stage();
-        MainView vistaPrincipal = new MainView(empleado);
+        VBox layoutPrincipal = new VBox(10);
+        layoutPrincipal.setPadding(new Insets(20));
 
-        Scene escena = vistaPrincipal.crearEscena();
+        Label etiquetaBienvenida = new Label("Bienvenido: " + empleado.getNombreCompleto());
+        Label etiquetaPuesto = new Label("Puesto: " + empleado.getPuesto());
+
+        Button botonCerrarSesion = new Button("Cerrar Sesión");
+        botonCerrarSesion.setOnAction(evento -> {
+            ventanaPrincipal.close();
+            mostrarLogin();
+        });
+
+        layoutPrincipal.getChildren().addAll(etiquetaBienvenida, etiquetaPuesto, botonCerrarSesion);
+
+        Scene escena = new Scene(layoutPrincipal, 800, 600);
         ventanaPrincipal.setScene(escena);
-        ventanaPrincipal.setTitle("Sistema de Agencia de Autos");
+        ventanaPrincipal.setTitle("Panel Principal - " + empleado.getNombre());
         ventanaPrincipal.show();
     }
+
+
 
     private void mostrarLogin() {
         Stage ventanaLogin = new Stage();
@@ -139,8 +151,6 @@ public class LoginView {
             etiquetaMensaje.setStyle("-fx-text-fill: green;");
         }
     }
-
-
 
     public GridPane getRoot() {
         return panelRaiz;
