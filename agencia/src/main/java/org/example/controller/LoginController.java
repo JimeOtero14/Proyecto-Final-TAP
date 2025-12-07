@@ -1,172 +1,118 @@
 package org.example.controller;
 
-import org.example.database.DatabaseConnection;
-import org.example.model.Empleado;
-import org.example.util.Constantes;
 
-import java.math.BigDecimal;
+import org.example.model.Empleado;
+import org.example.dao.EmpleadoDAO;
+import org.example.dao.EmpleadoDAOImpl;
+import org.example.view.*;
+import javafx.stage.Stage;
+import javafx.scene.Scene;
+
 import java.sql.*;
-import java.time.LocalDate;
 
 public class LoginController {
+    private EmpleadoDAO empleadoDAO;
+
+    public LoginController() {
+        this.empleadoDAO = new EmpleadoDAOImpl();
+    }
 
     public Empleado autenticar(String usuario, String contrasena) {
         if (usuario == null || usuario.trim().isEmpty()) {
-            System.err.println("Error: Usuario no puede ser nulo o vacío");
+            System.err.println("Error: Usuario vacío");
             return null;
         }
 
         if (contrasena == null || contrasena.trim().isEmpty()) {
-            System.err.println("Error: Contraseña no puede ser nula o vacía");
+            System.err.println("Error: Contraseña vacía");
             return null;
         }
+        return empleadoDAO.autenticar(usuario, contrasena);
+    }
 
-        if (usuario.length() < 3) {
-            System.err.println("Error: Usuario demasiado corto");
-            return null;
+    public void redirigirSegunNivel(Empleado empleado, Stage ventanaLogin) {
+        if (empleado == null) {
+            System.err.println("Error: Empleado nulo");
+            return;
         }
 
-        if (contrasena.length() < 4) {
-            System.err.println("Error: Contraseña demasiado corta");
-            return null;
-        }
+        ventanaLogin.close();
+        Stage ventanaPrincipal = new Stage();
 
-        String sql = """
-            SELECT e.* 
-            FROM usuario u 
-            INNER JOIN empleado e ON u.idEmpleado = e.idEmpleado 
-            WHERE u.username = ? AND u.contraseña = ? AND e.estado = ?
-            """;
-
-        Connection conexion = null;
-        PreparedStatement declaracion = null;
-        ResultSet resultados = null;
-
-        try {
-            conexion = DatabaseConnection.getInstance().getConnection();
-            if (conexion == null || conexion.isClosed()) {
-                System.err.println("Error: No hay conexión a la base de datos");
-                return null;
-            }
-
-            declaracion = conexion.prepareStatement(sql);
-            declaracion.setString(1, usuario);
-            declaracion.setString(2, contrasena);
-            declaracion.setString(3, Constantes.ESTADO_ACTIVO);
-
-            resultados = declaracion.executeQuery();
-
-            if (resultados.next()) {
-                Empleado empleado = mapearEmpleado(resultados);
-                System.out.println("Login exitoso para usuario: " + usuario);
-                return empleado;
-            } else {
-                System.err.println("Login fallido para usuario: " + usuario);
-                return null;
-            }
-
-        } catch (SQLException e) {
-            System.err.println("Error SQL en autenticación: " + e.getMessage());
-            e.printStackTrace();
-            return null;
-        } finally {
-            cerrarRecursos(resultados, declaracion, null);
+        switch (empleado.getPuesto().toUpperCase()) {
+            case "ADMIN":
+                mostrarVentanaAdmin(empleado, ventanaPrincipal);
+                break;
+            case "GERENTE":
+                mostrarVentanaGerente(empleado, ventanaPrincipal);
+                break;
+            case "MECANICO":
+                mostrarVentanaMecanico(empleado, ventanaPrincipal);
+                break;
+            case "VENDEDOR":
+                mostrarVentanaVendedor(empleado, ventanaPrincipal);
+                break;
+            default:
+                System.err.println("Nivel no reconocido: " + empleado.getPuesto());
+                mostrarVentanaVendedor(empleado, ventanaPrincipal);
         }
     }
 
-
-    private Empleado mapearEmpleado(ResultSet resultados) throws SQLException {
-        Empleado empleado = new Empleado();
-        empleado.setIdEmpleado(resultados.getString("idEmpleado"));
-        empleado.setNombre(resultados.getString("nombre"));
-        empleado.setApellidoPaterno(resultados.getString("apellidoPaterno"));
-        empleado.setApellidoMaterno(resultados.getString("apellidoMaterno"));
-        empleado.setPuesto(resultados.getString("puesto"));
-        empleado.setTelefono(resultados.getString("telefono"));
-        empleado.setEmail(resultados.getString("email"));
-        empleado.setSalario(resultados.getBigDecimal("salario"));
-
-        Date fecha = resultados.getDate("fechaContratacion");
-        if (fecha != null) {
-            try {
-                empleado.setFechaContratacion(fecha.toLocalDate());
-            } catch (Exception e) {
-                System.err.println("Error al convertir fecha: " + e.getMessage());
-                empleado.setFechaContratacion(null);
-            }
-        } else {
-            empleado.setFechaContratacion(null);
-        }
-
-        empleado.setEstado(resultados.getString("estado"));
-
-        if (!validarEmpleado(empleado)) {
-            throw new SQLException("Datos del empleado inválidos");
-        }
-
-        return empleado;
+    private void mostrarVentanaAdmin(Empleado empleado, Stage stage) {
+        AdminView vistaAdmin = new AdminView(this, empleado);
+        Scene escena = new Scene(vistaAdmin.getRoot(), 800, 600);
+        configurarVentana(stage, escena, "Administrador - " + empleado.getNombreCompleto());
     }
 
-    private boolean validarEmpleado(Empleado empleado) {
-        if (empleado.getIdEmpleado() == null || empleado.getIdEmpleado().trim().isEmpty()) {
-            return false;
-        }
-
-        if (empleado.getNombre() == null || empleado.getNombre().trim().isEmpty()) {
-            return false;
-        }
-
-        if (empleado.getApellidoPaterno() == null || empleado.getApellidoPaterno().trim().isEmpty()) {
-            return false;
-        }
-
-        if (empleado.getPuesto() == null || empleado.getPuesto().trim().isEmpty()) {
-            return false;
-        }
-
-        return true;
+    private void mostrarVentanaGerente(Empleado empleado, Stage stage) {
+        GerenteView vistaGerente = new GerenteView(this, empleado);
+        Scene escena = new Scene(vistaGerente.getRoot(), 800, 600);
+        configurarVentana(stage, escena, "Gerente - " + empleado.getNombreCompleto());
     }
 
-    private void cerrarRecursos(ResultSet rs, Statement stmt, Connection conn) {
-        try {
-            if (rs != null && !rs.isClosed()) {
-                rs.close();
-            }
-        } catch (SQLException e) {
-            System.err.println("Error al cerrar ResultSet: " + e.getMessage());
-        }
-
-        try {
-            if (stmt != null && !stmt.isClosed()) {
-                stmt.close();
-            }
-        } catch (SQLException e) {
-            System.err.println("Error al cerrar Statement: " + e.getMessage());
-        }
-
+    private void mostrarVentanaMecanico(Empleado empleado, Stage stage) {
+        MecanicoView vistaMecanico = new MecanicoView(this, empleado);
+        Scene escena = new Scene(vistaMecanico.getRoot(), 800, 600);
+        configurarVentana(stage, escena, "Mecánico - " + empleado.getNombreCompleto());
     }
 
-    public boolean verificarUsuarioExiste(String usuario) {
-        if (usuario == null || usuario.trim().isEmpty()) {
-            return false;
-        }
+    private void mostrarVentanaVendedor(Empleado empleado, Stage stage) {
+        VendedorView vistaVendedor = new VendedorView(this, empleado);
+        Scene escena = new Scene(vistaVendedor.getRoot(), 800, 600);
+        configurarVentana(stage, escena, "Vendedor - " + empleado.getNombreCompleto());
+    }
 
-        String sql = "SELECT COUNT(*) FROM usuario WHERE username = ?";
+    private void configurarVentana(Stage stage, Scene scene, String title) {
+        stage.setScene(scene);
+        stage.setTitle(title);
+        stage.setResizable(false);
+        stage.show();
+    }
 
-        try (Connection conexion = DatabaseConnection.getInstance().getConnection();
-             PreparedStatement declaracion = conexion.prepareStatement(sql)) {
+    public void cerrarSesion(Stage stageActual) {
+        javafx.scene.control.Alert confirmacion = new javafx.scene.control.Alert(
+                javafx.scene.control.Alert.AlertType.CONFIRMATION);
+        confirmacion.setTitle("Cerrar Sesión");
+        confirmacion.setHeaderText("¿Está seguro que desea cerrar sesión?");
+        confirmacion.setContentText("Presione OK para confirmar");
 
-            declaracion.setString(1, usuario);
-            ResultSet resultados = declaracion.executeQuery();
-
-            if (resultados.next()) {
-                return resultados.getInt(1) > 0;
+        confirmacion.showAndWait().ifPresent(respuesta -> {
+            if (respuesta == javafx.scene.control.ButtonType.OK) {
+                org.example.database.DatabaseConnection.closeConnection();
+                stageActual.close();
+                mostrarLogin();
             }
+        });
+    }
 
-        } catch (SQLException e) {
-            System.err.println("Error al verificar usuario: " + e.getMessage());
-        }
+    private void mostrarLogin() {
+        Stage ventanaLogin = new Stage();
+        LoginView vistaLogin = new LoginView();
 
-        return false;
+        Scene escena = new Scene(vistaLogin.getRoot(), 600, 400);
+        ventanaLogin.setScene(escena);
+        ventanaLogin.setTitle("Agencia de Autos - Login");
+        ventanaLogin.setResizable(false);
+        ventanaLogin.show();
     }
 }

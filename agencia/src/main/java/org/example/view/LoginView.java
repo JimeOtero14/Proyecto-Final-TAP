@@ -2,16 +2,13 @@ package org.example.view;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.example.controller.LoginController;
 import org.example.database.DatabaseConnection;
 import org.example.model.Empleado;
-import org.example.controller.MainController;
 
 public class LoginView {
     private GridPane panelRaiz;
@@ -112,16 +109,7 @@ public class LoginView {
     }
 
     private void abrirVentanaPrincipal(Empleado empleado) {
-        Stage ventanaActual = (Stage) panelRaiz.getScene().getWindow();
-        ventanaActual.close();
-
-        Stage ventanaPrincipal = new Stage();
-        MainController controladorPrincipal = new MainController(empleado);
-
-        Scene escena = new Scene(controladorPrincipal.getVista().getRoot(), 900, 600);
-        ventanaPrincipal.setScene(escena);
-        ventanaPrincipal.setTitle("Sistema de Agencia de Autos");
-        ventanaPrincipal.show();
+        controlador.redirigirSegunNivel(empleado, (Stage) panelRaiz.getScene().getWindow());
     }
 
     private void mostrarMensaje(String mensaje, boolean error) {
