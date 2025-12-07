@@ -6,16 +6,18 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
-import org.example.database.DatabaseConnection;
 import org.example.model.Empleado;
+import org.example.controller.MainController;
 
 public class MainView {
     private BorderPane panelRaiz;
     private Empleado empleadoActual;
+    private MainController controlador;
     private Label etiquetaUsuario;
     private VBox panelContenido;
 
-    public MainView(Empleado empleado) {
+    public MainView(MainController mainController, Empleado empleado) {
+        this.controlador = mainController;
         this.empleadoActual = empleado;
         crearVista();
         mostrarPanelBienvenida();
@@ -38,7 +40,10 @@ public class MainView {
         etiquetaUsuario = new Label("Usuario: " + empleadoActual.getNombreCompleto());
 
         Button botonCerrarSesion = new Button("Cerrar Sesión");
-        botonCerrarSesion.setOnAction(e -> cerrarSesion());
+        botonCerrarSesion.setOnAction(e -> {
+            Stage stageActual = (Stage) ((Button) e.getSource()).getScene().getWindow();
+            controlador.cerrarSesion(stageActual);
+        });
 
         barraSuperior.getChildren().addAll(titulo, espaciador, etiquetaUsuario, botonCerrarSesion);
         panelRaiz.setTop(barraSuperior);
@@ -71,12 +76,12 @@ public class MainView {
         Button btnConfigurarPrecios = new Button("Configurar Precios");
         Button btnGestionUsuarios = new Button("Gestión de Usuarios");
 
-        btnRegistrarVehiculo.setOnAction(e -> mostrarRegistrarVehiculo());
-        btnConsultarInventario.setOnAction(e -> mostrarConsultarInventario());
-        btnGestionarCliente.setOnAction(e -> mostrarGestionarCliente());
-        btnProcesarVenta.setOnAction(e -> mostrarProcesarVenta());
-        btnConfigurarPrecios.setOnAction(e -> mostrarConfigurarPrecios());
-        btnGestionUsuarios.setOnAction(e -> mostrarGestionUsuarios());
+        btnRegistrarVehiculo.setOnAction(e -> controlador.mostrarRegistrarVehiculo());
+        btnConsultarInventario.setOnAction(e -> controlador.mostrarConsultarInventario());
+        btnGestionarCliente.setOnAction(e -> controlador.mostrarGestionarCliente());
+        btnProcesarVenta.setOnAction(e -> controlador.mostrarProcesarVenta());
+        btnConfigurarPrecios.setOnAction(e -> controlador.mostrarConfigurarPrecios());
+        btnGestionUsuarios.setOnAction(e -> controlador.mostrarGestionUsuarios());
 
         btnRegistrarVehiculo.setMaxWidth(Double.MAX_VALUE);
         btnConsultarInventario.setMaxWidth(Double.MAX_VALUE);
@@ -108,61 +113,6 @@ public class MainView {
         Label mensaje = new Label("Seleccione una opción del menú.");
 
         panelContenido.getChildren().addAll(titulo, mensaje);
-    }
-
-    private void mostrarRegistrarVehiculo() {
-        panelContenido.getChildren().clear();
-    }
-
-    private void mostrarConsultarInventario() {
-        panelContenido.getChildren().clear();
-    }
-
-    private void mostrarGestionarCliente() {
-        panelContenido.getChildren().clear();
-    }
-
-    private void mostrarProcesarVenta() {
-        panelContenido.getChildren().clear();
-    }
-
-    private void mostrarConfigurarPrecios() {
-        panelContenido.getChildren().clear();
-    }
-
-    private void mostrarGestionUsuarios() {
-        panelContenido.getChildren().clear();
-    }
-
-    private void cerrarSesion() {
-        Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
-        confirmacion.setTitle("Cerrar Sesión");
-        confirmacion.setHeaderText("¿Está seguro que desea cerrar sesión?");
-        confirmacion.setContentText("Presione OK para confirmar");
-
-        confirmacion.showAndWait().ifPresent(respuesta -> {
-            if (respuesta == ButtonType.OK) {
-                Stage ventanaActual = (Stage) panelRaiz.getScene().getWindow();
-                ventanaActual.close();
-                mostrarLogin();
-            }
-        });
-    }
-
-    private void mostrarLogin() {
-        Stage ventanaLogin = new Stage();
-        LoginView vistaLogin = new LoginView();
-
-        Scene escena = new Scene(vistaLogin.getRoot(), 600, 400);
-        ventanaLogin.setScene(escena);
-        ventanaLogin.setTitle("Agencia de Autos - Login");
-        ventanaLogin.setResizable(false);
-
-        ventanaLogin.setOnHidden(e -> {
-            DatabaseConnection.closeConnection();
-        });
-
-        ventanaLogin.show();
     }
 
     public BorderPane getRoot() {

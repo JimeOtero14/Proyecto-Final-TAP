@@ -86,14 +86,6 @@ public class LoginController {
         empleado.setEmail(resultados.getString("email"));
         empleado.setSalario(resultados.getBigDecimal("salario"));
 
-        try {
-            BigDecimal salario = resultados.getBigDecimal("salario");
-            empleado.setSalario(salario);
-        } catch (SQLException e) {
-            System.err.println("Error al obtener salario: " + e.getMessage());
-            empleado.setSalario(null);
-        }
-
         Date fecha = resultados.getDate("fechaContratacion");
         if (fecha != null) {
             try {
@@ -108,7 +100,6 @@ public class LoginController {
 
         empleado.setEstado(resultados.getString("estado"));
 
-        // Validar datos esenciales
         if (!validarEmpleado(empleado)) {
             throw new SQLException("Datos del empleado inválidos");
         }
@@ -153,10 +144,8 @@ public class LoginController {
             System.err.println("Error al cerrar Statement: " + e.getMessage());
         }
 
-        // Nota: No cerramos la conexión aquí, se maneja en DatabaseConnection
     }
 
-    // Método para verificar si un usuario existe (sin validar contraseña)
     public boolean verificarUsuarioExiste(String usuario) {
         if (usuario == null || usuario.trim().isEmpty()) {
             return false;
@@ -179,67 +168,5 @@ public class LoginController {
         }
 
         return false;
-    }
-
-    // Método para obtener información del usuario sin contraseña
-    public Empleado obtenerInformacionUsuario(String idEmpleado) {
-        if (idEmpleado == null || idEmpleado.trim().isEmpty()) {
-            return null;
-        }
-
-        String sql = "SELECT * FROM empleado WHERE idEmpleado = ? AND estado = ?";
-
-        try (Connection conexion = DatabaseConnection.getInstance().getConnection();
-             PreparedStatement declaracion = conexion.prepareStatement(sql)) {
-
-            declaracion.setString(1, idEmpleado);
-            declaracion.setString(2, Constantes.ESTADO_ACTIVO);
-
-            ResultSet resultados = declaracion.executeQuery();
-
-            if (resultados.next()) {
-                return mapearEmpleado(resultados);
-            }
-
-        } catch (SQLException e) {
-            System.err.println("Error al obtener información del usuario: " + e.getMessage());
-        }
-
-        return null;
-    }
-
-    // Método para cambiar contraseña
-    public boolean cambiarContrasena(String usuario, String contrasenaActual, String contrasenaNueva) {
-        if (usuario == null || contrasenaActual == null || contrasenaNueva == null) {
-            return false;
-        }
-
-        if (contrasenaNueva.length() < 4) {
-            System.err.println("Error: Nueva contraseña demasiado corta");
-            return false;
-        }
-
-        // Primero verificar que la contraseña actual es correcta
-        Empleado empleado = autenticar(usuario, contrasenaActual);
-        if (empleado == null) {
-            System.err.println("Error: Contraseña actual incorrecta");
-            return false;
-        }
-
-        String sql = "UPDATE usuario SET contraseña = ? WHERE username = ?";
-
-        try (Connection conexion = DatabaseConnection.getInstance().getConnection();
-             PreparedStatement declaracion = conexion.prepareStatement(sql)) {
-
-            declaracion.setString(1, contrasenaNueva);
-            declaracion.setString(2, usuario);
-
-            int filasActualizadas = declaracion.executeUpdate();
-            return filasActualizadas > 0;
-
-        } catch (SQLException e) {
-            System.err.println("Error al cambiar contraseña: " + e.getMessage());
-            return false;
-        }
     }
 }
