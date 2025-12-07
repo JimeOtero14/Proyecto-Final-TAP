@@ -17,37 +17,110 @@ public class Empleado {
 
     public Empleado() {}
 
-    public String getIdEmpleado() { return idEmpleado; }
-    public void setIdEmpleado(String idEmpleado) { this.idEmpleado = idEmpleado; }
+    public String getIdEmpleado() {
+        return idEmpleado;
+    }
 
-    public String getNombre() { return nombre; }
-    public void setNombre(String nombre) { this.nombre = nombre; }
+    public void setIdEmpleado(String idEmpleado) {
+        this.idEmpleado = idEmpleado;
+    }
 
-    public String getApellidoPaterno() { return apellidoPaterno; }
-    public void setApellidoPaterno(String apellidoPaterno) { this.apellidoPaterno = apellidoPaterno; }
+    public String getNombre() {
+        return nombre;
+    }
 
-    public String getApellidoMaterno() { return apellidoMaterno; }
-    public void setApellidoMaterno(String apellidoMaterno) { this.apellidoMaterno = apellidoMaterno; }
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
 
-    public String getPuesto() { return puesto; }
-    public void setPuesto(String puesto) { this.puesto = puesto; }
+    public String getApellidoPaterno() {
+        return apellidoPaterno;
+    }
 
-    public String getTelefono() { return telefono; }
-    public void setTelefono(String telefono) { this.telefono = telefono; }
+    public void setApellidoPaterno(String apellidoPaterno) {
+        this.apellidoPaterno = apellidoPaterno;
+    }
 
-    public String getEmail() { return email; }
-    public void setEmail(String email) { this.email = email; }
+    public String getApellidoMaterno() {
+        return apellidoMaterno;
+    }
 
-    public BigDecimal getSalario() { return salario; }
-    public void setSalario(BigDecimal salario) { this.salario = salario; }
+    public void setApellidoMaterno(String apellidoMaterno) {
+        this.apellidoMaterno = apellidoMaterno;
+    }
 
-    public LocalDate getFechaContratacion() { return fechaContratacion; }
-    public void setFechaContratacion(LocalDate fechaContratacion) { this.fechaContratacion = fechaContratacion; }
+    public String getPuesto() {
+        return puesto;
+    }
 
-    public String getEstado() { return estado; }
-    public void setEstado(String estado) { this.estado = estado; }
+    public void setPuesto(String puesto) {
+        this.puesto = puesto;
+    }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public BigDecimal getSalario() {
+        return salario;
+    }
+
+    public void setSalario(BigDecimal salario) {
+        this.salario = salario;
+    }
+
+    public LocalDate getFechaContratacion() {
+        return fechaContratacion;
+    }
+
+    public void setFechaContratacion(LocalDate fechaContratacion) {
+        this.fechaContratacion = fechaContratacion;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
 
     public String getNombreCompleto() {
         return nombre + " " + apellidoPaterno + " " + apellidoMaterno;
+    }
+
+    public boolean isActivo() {
+        return "AC".equalsIgnoreCase(estado);
+    }
+
+    public boolean isGerente() {
+        return "Gerente".equalsIgnoreCase(puesto);
+    }
+
+    public boolean isVendedor() {
+        return "Vendedor".equalsIgnoreCase(puesto);
+    }
+
+    public String getNombreFormal() {
+        return apellidoPaterno + " " + apellidoMaterno + ", " + nombre;
+    }
+
+    public int getAniosAntiguedad() {
+        if (fechaContratacion != null) {
+            return java.time.LocalDate.now().getYear() - fechaContratacion.getYear();
+        }
+        return 0;
     }
 }

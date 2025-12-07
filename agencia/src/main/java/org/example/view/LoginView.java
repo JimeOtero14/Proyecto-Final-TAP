@@ -51,7 +51,6 @@ public class LoginView {
         campoContrasena.setPromptText("Ingrese contraseña");
         GridPane.setConstraints(campoContrasena, 1, 2);
 
-        // Botones
         HBox panelBotones = new HBox(10);
         panelBotones.setAlignment(Pos.CENTER);
 
@@ -89,8 +88,15 @@ public class LoginView {
         String usuario = campoUsuario.getText().trim();
         String contrasena = campoContrasena.getText().trim();
 
-        if (usuario.isEmpty() || contrasena.isEmpty()) {
-            mostrarMensaje("Por favor, complete todos los campos", true);
+        if (usuario.isEmpty()) {
+            mostrarMensaje("El usuario es requerido", true);
+            campoUsuario.requestFocus();
+            return;
+        }
+
+        if (contrasena.isEmpty()) {
+            mostrarMensaje("La contraseña es requerida", true);
+            campoContrasena.requestFocus();
             return;
         }
 
@@ -115,20 +121,6 @@ public class LoginView {
         ventanaPrincipal.setScene(escena);
         ventanaPrincipal.setTitle("Sistema de Agencia de Autos");
         ventanaPrincipal.show();
-    }
-
-
-
-    private void mostrarLogin() {
-        Stage ventanaLogin = new Stage();
-        ventanaLogin.setTitle("Agencia de Autos - Login");
-
-        campoUsuario.clear();
-        campoContrasena.clear();
-        etiquetaMensaje.setText("");
-
-        ventanaLogin.setScene(new Scene(panelRaiz, 600, 400));
-        ventanaLogin.show();
     }
 
     private void mostrarMensaje(String mensaje, boolean error) {

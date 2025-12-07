@@ -25,12 +25,12 @@ public class MainView {
         panelRaiz = new BorderPane();
         panelRaiz.setPadding(new Insets(10));
 
-        // Barra superior
         HBox barraSuperior = new HBox(10);
         barraSuperior.setPadding(new Insets(10));
         barraSuperior.setAlignment(Pos.CENTER_LEFT);
 
         Label titulo = new Label("Sistema de Agencia de Autos");
+        titulo.setStyle("-fx-font-size: 20px; -fx-font-weight: bold;");
 
         Region espaciador = new Region();
         HBox.setHgrow(espaciador, Priority.ALWAYS);
@@ -43,14 +43,11 @@ public class MainView {
         barraSuperior.getChildren().addAll(titulo, espaciador, etiquetaUsuario, botonCerrarSesion);
         panelRaiz.setTop(barraSuperior);
 
-        // Menú lateral
         VBox menuLateral = crearMenuLateral();
         panelRaiz.setLeft(menuLateral);
 
-        // Panel de contenido principal
-        panelContenido = new VBox(10);
+        panelContenido = new VBox();
         panelContenido.setPadding(new Insets(20));
-        panelContenido.setAlignment(Pos.TOP_LEFT);
 
         ScrollPane scrollPane = new ScrollPane(panelContenido);
         scrollPane.setFitToWidth(true);
@@ -63,38 +60,40 @@ public class MainView {
         menu.setPrefWidth(200);
 
         Label tituloMenu = new Label("MENÚ PRINCIPAL");
+        tituloMenu.setStyle("-fx-font-weight: bold;");
 
         Separator separador = new Separator();
 
-        // Botones del menú
-        Button btnInicio = new Button("Inicio");
-        Button btnVehiculos = new Button("Vehículos");
-        Button btnClientes = new Button("Clientes");
-        Button btnVentas = new Button("Ventas");
-        Button btnEmpleados = new Button("Empleados");
-        Button btnReportes = new Button("Reportes");
-        Button btnConfiguracion = new Button("Configuración");
+        Button btnRegistrarVehiculo = new Button("Registrar Vehículo");
+        Button btnConsultarInventario = new Button("Consultar Inventario");
+        Button btnGestionarCliente = new Button("Gestionar Cliente");
+        Button btnProcesarVenta = new Button("Procesar Venta");
+        Button btnConfigurarPrecios = new Button("Configurar Precios");
+        Button btnGestionUsuarios = new Button("Gestión de Usuarios");
 
-        // Acciones de los botones
-        btnInicio.setOnAction(e -> mostrarPanelBienvenida());
-        btnVehiculos.setOnAction(e -> mostrarPanelVehiculos());
-        btnClientes.setOnAction(e -> mostrarPanelClientes());
-        btnVentas.setOnAction(e -> mostrarPanelVentas());
-        btnEmpleados.setOnAction(e -> mostrarPanelEmpleados());
-        btnReportes.setOnAction(e -> mostrarPanelReportes());
-        btnConfiguracion.setOnAction(e -> mostrarPanelConfiguracion());
+        btnRegistrarVehiculo.setOnAction(e -> mostrarRegistrarVehiculo());
+        btnConsultarInventario.setOnAction(e -> mostrarConsultarInventario());
+        btnGestionarCliente.setOnAction(e -> mostrarGestionarCliente());
+        btnProcesarVenta.setOnAction(e -> mostrarProcesarVenta());
+        btnConfigurarPrecios.setOnAction(e -> mostrarConfigurarPrecios());
+        btnGestionUsuarios.setOnAction(e -> mostrarGestionUsuarios());
 
-        // Añadir al menú
+        btnRegistrarVehiculo.setMaxWidth(Double.MAX_VALUE);
+        btnConsultarInventario.setMaxWidth(Double.MAX_VALUE);
+        btnGestionarCliente.setMaxWidth(Double.MAX_VALUE);
+        btnProcesarVenta.setMaxWidth(Double.MAX_VALUE);
+        btnConfigurarPrecios.setMaxWidth(Double.MAX_VALUE);
+        btnGestionUsuarios.setMaxWidth(Double.MAX_VALUE);
+
         menu.getChildren().addAll(
                 tituloMenu,
                 separador,
-                btnInicio,
-                btnVehiculos,
-                btnClientes,
-                btnVentas,
-                btnEmpleados,
-                btnReportes,
-                btnConfiguracion
+                btnRegistrarVehiculo,
+                btnConsultarInventario,
+                btnGestionarCliente,
+                btnProcesarVenta,
+                btnConfigurarPrecios,
+                btnGestionUsuarios
         );
 
         return menu;
@@ -106,137 +105,33 @@ public class MainView {
         Label titulo = new Label("Bienvenido al Sistema");
         titulo.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
 
-        Label mensaje = new Label("Seleccione una opción del menú lateral para comenzar.");
-        mensaje.setStyle("-fx-font-size: 14px;");
+        Label mensaje = new Label("Seleccione una opción del menú.");
 
-        Label infoUsuario = new Label("Usuario actual: " + empleadoActual.getNombreCompleto());
-        Label infoPuesto = new Label("Puesto: " + empleadoActual.getPuesto());
-
-        panelContenido.getChildren().addAll(titulo, mensaje, infoUsuario, infoPuesto);
+        panelContenido.getChildren().addAll(titulo, mensaje);
     }
 
-    private void mostrarPanelVehiculos() {
+    private void mostrarRegistrarVehiculo() {
         panelContenido.getChildren().clear();
-
-        Label titulo = new Label("Gestión de Vehículos");
-        titulo.setStyle("-fx-font-size: 22px; -fx-font-weight: bold;");
-
-        // Submenú para vehículos
-        HBox subMenu = new HBox(10);
-        Button btnListar = new Button("Listar Vehículos");
-        Button btnNuevo = new Button("Nuevo Vehículo");
-        Button btnBuscar = new Button("Buscar Vehículo");
-
-        subMenu.getChildren().addAll(btnListar, btnNuevo, btnBuscar);
-
-        Label contenido = new Label("Aquí se mostrará la gestión de vehículos.");
-
-        panelContenido.getChildren().addAll(titulo, subMenu, contenido);
     }
 
-    private void mostrarPanelClientes() {
+    private void mostrarConsultarInventario() {
         panelContenido.getChildren().clear();
-
-        Label titulo = new Label("Gestión de Clientes");
-        titulo.setStyle("-fx-font-size: 22px; -fx-font-weight: bold;");
-
-        // Submenú para clientes
-        HBox subMenu = new HBox(10);
-        Button btnListar = new Button("Listar Clientes");
-        Button btnNuevo = new Button("Nuevo Cliente");
-        Button btnBuscar = new Button("Buscar Cliente");
-
-        subMenu.getChildren().addAll(btnListar, btnNuevo, btnBuscar);
-
-        Label contenido = new Label("Aquí se mostrará la gestión de clientes.");
-
-        panelContenido.getChildren().addAll(titulo, subMenu, contenido);
     }
 
-    private void mostrarPanelVentas() {
+    private void mostrarGestionarCliente() {
         panelContenido.getChildren().clear();
-
-        Label titulo = new Label("Registro de Ventas");
-        titulo.setStyle("-fx-font-size: 22px; -fx-font-weight: bold;");
-
-        // Submenú para ventas
-        HBox subMenu = new HBox(10);
-        Button btnNueva = new Button("Nueva Venta");
-        Button btnHistorial = new Button("Historial");
-        Button btnReporte = new Button("Reporte Ventas");
-
-        subMenu.getChildren().addAll(btnNueva, btnHistorial, btnReporte);
-
-        Label contenido = new Label("Aquí se mostrará el registro de ventas.");
-
-        panelContenido.getChildren().addAll(titulo, subMenu, contenido);
     }
 
-    private void mostrarPanelEmpleados() {
+    private void mostrarProcesarVenta() {
         panelContenido.getChildren().clear();
-
-        Label titulo = new Label("Gestión de Empleados");
-        titulo.setStyle("-fx-font-size: 22px; -fx-font-weight: bold;");
-
-        // Submenú para empleados
-        HBox subMenu = new HBox(10);
-        Button btnListar = new Button("Listar Empleados");
-        Button btnNuevo = new Button("Nuevo Empleado");
-        Button btnPermisos = new Button("Permisos");
-
-        subMenu.getChildren().addAll(btnListar, btnNuevo, btnPermisos);
-
-        Label contenido = new Label("Aquí se mostrará la gestión de empleados.");
-
-        panelContenido.getChildren().addAll(titulo, subMenu, contenido);
     }
 
-    private void mostrarPanelReportes() {
+    private void mostrarConfigurarPrecios() {
         panelContenido.getChildren().clear();
-
-        Label titulo = new Label("Reportes y Estadísticas");
-        titulo.setStyle("-fx-font-size: 22px; -fx-font-weight: bold;");
-
-        // Submenú para reportes
-        VBox subMenu = new VBox(10);
-        Button btnVentas = new Button("Reporte de Ventas");
-        Button btnInventario = new Button("Reporte de Inventario");
-        Button btnClientes = new Button("Reporte de Clientes");
-        Button btnEmpleados = new Button("Reporte de Empleados");
-
-        subMenu.getChildren().addAll(btnVentas, btnInventario, btnClientes, btnEmpleados);
-
-        panelContenido.getChildren().addAll(titulo, subMenu);
     }
 
-    private void mostrarPanelConfiguracion() {
+    private void mostrarGestionUsuarios() {
         panelContenido.getChildren().clear();
-
-        Label titulo = new Label("Configuración del Sistema");
-        titulo.setStyle("-fx-font-size: 22px; -fx-font-weight: bold;");
-
-        // Opciones de configuración
-        VBox opciones = new VBox(10);
-
-        CheckBox chkNotificaciones = new CheckBox("Activar notificaciones");
-        CheckBox chkAutoguardado = new CheckBox("Autoguardado cada 5 minutos");
-
-        Label lblTema = new Label("Tema de la interfaz:");
-        ComboBox<String> comboTema = new ComboBox<>();
-        comboTema.getItems().addAll("Claro", "Oscuro", "Automático");
-        comboTema.setValue("Claro");
-
-        Button btnGuardarConfig = new Button("Guardar Configuración");
-
-        opciones.getChildren().addAll(
-                chkNotificaciones,
-                chkAutoguardado,
-                lblTema,
-                comboTema,
-                btnGuardarConfig
-        );
-
-        panelContenido.getChildren().addAll(titulo, opciones);
     }
 
     private void cerrarSesion() {
