@@ -15,16 +15,19 @@ public class GerenteView extends BaseView {
         panelBotones.getChildren().clear();
 
         Button btnConsultarInventario = crearBotonGrande("Consultar Inventario");
+        btnConsultarInventario.getStyleClass().add("gerente-button");
         btnConsultarInventario.setOnAction(e -> {
             System.out.println("GERENTE: Consultar inventario clickeado");
         });
 
         Button btnGestionarCliente = crearBotonGrande("Gestionar Cliente");
+        btnGestionarCliente.getStyleClass().add("gerente-button");
         btnGestionarCliente.setOnAction(e -> {
             System.out.println("GERENTE: Gestionar cliente clickeado");
         });
 
         Button btnConfigurarPrecios = crearBotonGrande("Configurar Precios");
+        btnConfigurarPrecios.getStyleClass().add("gerente-button");
         btnConfigurarPrecios.setOnAction(e -> {
             System.out.println("GERENTE: Configurar precios clickeado");
         });

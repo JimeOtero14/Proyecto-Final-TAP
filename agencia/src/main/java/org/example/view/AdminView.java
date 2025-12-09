@@ -8,6 +8,7 @@ public class AdminView extends BaseView {
 
     public AdminView(LoginController controlador, Empleado empleado) {
         super(controlador, empleado);
+
     }
 
     @Override
@@ -15,16 +16,19 @@ public class AdminView extends BaseView {
         panelBotones.getChildren().clear();
 
         Button btnRegistrarUsuario = crearBotonGrande("Registrar Usuario");
+        btnRegistrarUsuario.getStyleClass().add("admin-button");
         btnRegistrarUsuario.setOnAction(e -> {
             System.out.println("ADMIN: Registrar usuario clickeado");
         });
 
         Button btnEditarUsuario = crearBotonGrande("Editar Usuario");
+        btnEditarUsuario.getStyleClass().add("admin-button");
         btnEditarUsuario.setOnAction(e -> {
             System.out.println("ADMIN: Editar usuario clickeado");
         });
 
         Button btnDarBajaUsuario = crearBotonGrande("Dar de Baja Usuario");
+        btnDarBajaUsuario.getStyleClass().add("admin-button");
         btnDarBajaUsuario.setOnAction(e -> {
             System.out.println("ADMIN: Dar baja usuario clickeado");
         });

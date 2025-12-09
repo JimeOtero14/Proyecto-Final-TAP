@@ -11,6 +11,7 @@ import org.example.database.DatabaseConnection;
 import org.example.model.Empleado;
 
 public class LoginView {
+    private Label etiquetaTitulo;
     private GridPane panelRaiz;
     private TextField campoUsuario;
     private PasswordField campoContrasena;
@@ -31,7 +32,7 @@ public class LoginView {
         panelRaiz.setVgap(10);
         panelRaiz.setAlignment(Pos.CENTER);
 
-        Label etiquetaTitulo = new Label("Sistema de Agencia de Autos");
+        etiquetaTitulo = new Label("Sistema de Agencia de Autos");
         etiquetaTitulo.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
         GridPane.setConstraints(etiquetaTitulo, 0, 0, 2, 1);
 
@@ -71,6 +72,28 @@ public class LoginView {
             DatabaseConnection.closeConnection();
             System.exit(0);
         });
+
+        aplicarEstilosLogin();
+    }
+
+    private void aplicarEstilosLogin() {
+        try {
+            panelRaiz.getStylesheets().add(
+                    getClass().getResource("/styles/estilos.css").toExternalForm()
+            );
+        } catch (Exception e) {
+            System.err.println("Error cargando CSS: " + e.getMessage());
+        }
+
+        panelRaiz.getStyleClass().add("login-container");
+
+        if (etiquetaTitulo != null) {
+            etiquetaTitulo.getStyleClass().add("login-title");
+        }
+
+        if (botonLogin != null) {
+            botonLogin.getStyleClass().add("login-button");
+        }
     }
 
     private void configurarEventos() {

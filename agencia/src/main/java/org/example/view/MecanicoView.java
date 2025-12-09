@@ -15,11 +15,13 @@ public class MecanicoView extends BaseView {
         panelBotones.getChildren().clear();
 
         Button btnRegistrarVehiculo = crearBotonGrande("Registrar Vehículo");
+        btnRegistrarVehiculo.getStyleClass().add("mecanico-button");
         btnRegistrarVehiculo.setOnAction(e -> {
             System.out.println("MECANICO: Registrar vehículo clickeado");
         });
 
         Button btnRegistrarMantenimiento = crearBotonGrande("Registrar Mantenimiento");
+        btnRegistrarMantenimiento.getStyleClass().add("mecanico-button");
         btnRegistrarMantenimiento.setOnAction(e -> {
             System.out.println("MECANICO: Registrar mantenimiento clickeado");
         });

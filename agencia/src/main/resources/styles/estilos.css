@@ -1,0 +1,462 @@
+/* ============================================
+   AGENCIA DE AUTOS - CSS PROFESIONAL
+   Funciona SIN modificar el código Java
+   ============================================ */
+
+/* RESET y estilos base */
+* {
+    -fx-font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+}
+
+/* Variables globales */
+.root {
+    -primary-color: #1E3A8A;      /* Azul corporativo profundo */
+    -secondary-color: #3B82F6;    /* Azul brillante */
+    -accent-color: #DC2626;       /* Rojo energía */
+    -gold-accent: #D97706;        /* Dorado premium */
+    -dark-bg: #0F172A;            /* Fondo oscuro */
+    -light-bg: #F8FAFC;           /* Fondo claro */
+    -card-bg: #FFFFFF;            /* Fondo tarjetas */
+    -text-dark: #1E293B;          /* Texto oscuro */
+    -text-light: #64748B;         /* Texto claro */
+    -border-color: #E2E8F0;       /* Color bordes */
+
+    -shadow-sm: 0 1px 3px rgba(0,0,0,0.12);
+    -shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+    -shadow-lg: 0 10px 25px rgba(0,0,0,0.15);
+    -shadow-xl: 0 20px 40px rgba(0,0,0,0.2);
+
+    -radius-sm: 6px;
+    -radius-md: 10px;
+    -radius-lg: 16px;
+    -radius-xl: 24px;
+
+    -transition-fast: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    -transition-normal: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ============================================
+   LOGIN VIEW - Estilos que funcionan con GridPane actual
+   ============================================ */
+
+/* Fondo del login */
+GridPane {
+    -fx-background-color: linear-gradient(135deg, #0F172A 0%, #1E3A8A 100%);
+    -fx-padding: 40px;
+}
+
+/* Título del login */
+GridPane > Label {
+    -fx-text-fill: white !important;
+    -fx-font-size: 28px !important;
+    -fx-font-weight: 800 !important;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 4, 0, 0, 2);
+    -fx-padding: 0 0 20px 0;
+}
+
+/* Labels de usuario/contraseña */
+GridPane > Label:not(:first-child) {
+    -fx-text-fill: rgba(255,255,255,0.9) !important;
+    -fx-font-size: 14px !important;
+    -fx-font-weight: 600 !important;
+    -fx-padding: 5px 0;
+}
+
+/* Campos de texto */
+GridPane > TextField,
+GridPane > PasswordField {
+    -fx-background-color: white;
+    -fx-background-radius: -radius-sm;
+    -fx-border-color: #CBD5E1;
+    -fx-border-radius: -radius-sm;
+    -fx-border-width: 1.5px;
+    -fx-padding: 12px 15px;
+    -fx-font-size: 14px;
+    -fx-pref-height: 45px;
+    -fx-effect: -shadow-sm;
+}
+
+GridPane > TextField:focused,
+GridPane > PasswordField:focused {
+    -fx-border-color: -secondary-color;
+    -fx-border-width: 2px;
+    -fx-effect: dropshadow(gaussian, rgba(59, 130, 246, 0.2), 8, 0, 0, 2);
+    -fx-background-color: #F8FAFF;
+}
+
+/* Botón de login */
+GridPane > HBox > Button:first-child {
+    -fx-background-color: linear-gradient(to right, #DC2626, #EF4444) !important;
+    -fx-text-fill: white !important;
+    -fx-font-weight: 700 !important;
+    -fx-font-size: 15px !important;
+    -fx-pref-height: 48px !important;
+    -fx-min-width: 150px !important;
+    -fx-background-radius: -radius-sm !important;
+    -fx-cursor: hand;
+    -fx-effect: -shadow-md !important;
+    -fx-border-color: transparent !important;
+    -fx-border-width: 0 !important;
+    -fx-padding: 0 30px !important;
+}
+
+GridPane > HBox > Button:first-child:hover {
+    -fx-background-color: linear-gradient(to right, #B91C1C, #DC2626) !important;
+    -fx-effect: -shadow-lg !important;
+    -fx-translate-y: -1px;
+}
+
+GridPane > HBox > Button:first-child:pressed {
+    -fx-background-color: linear-gradient(to right, #991B1B, #B91C1C) !important;
+    -fx-effect: -shadow-sm !important;
+    -fx-translate-y: 1px;
+}
+
+/* Botón de salir */
+GridPane > HBox > Button:last-child {
+    -fx-background-color: transparent !important;
+    -fx-text-fill: rgba(255,255,255,0.8) !important;
+    -fx-font-weight: 600 !important;
+    -fx-font-size: 14px !important;
+    -fx-pref-height: 48px !important;
+    -fx-min-width: 100px !important;
+    -fx-background-radius: -radius-sm !important;
+    -fx-cursor: hand;
+    -fx-border-color: rgba(255,255,255,0.3) !important;
+    -fx-border-width: 1.5px !important;
+    -fx-border-radius: -radius-sm !important;
+}
+
+GridPane > HBox > Button:last-child:hover {
+    -fx-background-color: rgba(255,255,255,0.1) !important;
+    -fx-text-fill: white !important;
+    -fx-border-color: rgba(255,255,255,0.5) !important;
+}
+
+/* Mensaje de error/success */
+GridPane > Label:last-child {
+    -fx-font-size: 13px !important;
+    -fx-font-weight: 500 !important;
+    -fx-padding: 10px 15px !important;
+    -fx-background-radius: -radius-sm !important;
+    -fx-border-radius: -radius-sm !important;
+    -fx-background-color: rgba(220, 38, 38, 0.1) !important;
+    -fx-border-color: rgba(220, 38, 38, 0.3) !important;
+    -fx-border-width: 1px !important;
+    -fx-text-fill: #DC2626 !important;
+}
+
+/* ============================================
+   MAIN VIEWS (Admin, Gerente, Mecánico, Vendedor)
+   ============================================ */
+
+/* Contenedor principal de todas las vistas */
+BorderPane {
+    -fx-background-color: -light-bg;
+    -fx-background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><path d="M20,20 Q50,10 80,20 T100,50 T80,80 T50,90 T20,80 T0,50 T20,20 Z" fill="rgba(30, 58, 138, 0.03)"/></svg>');
+    -fx-background-size: 300px 300px;
+}
+
+/* Barra superior (HBox dentro del BorderPane) */
+BorderPane > HBox {
+    -fx-background-color: linear-gradient(to right, -primary-color, -secondary-color);
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 10, 0, 0, 3);
+    -fx-padding: 20px 30px !important;
+    -fx-spacing: 20px;
+    -fx-border-color: rgba(217, 119, 6, 0.2);
+    -fx-border-width: 0 0 1px 0;
+}
+
+/* Título en barra superior */
+BorderPane > HBox > Label:first-child {
+    -fx-font-size: 22px !important;
+    -fx-font-weight: 800 !important;
+    -fx-text-fill: white !important;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 3, 0, 0, 1);
+}
+
+/* Usuario en barra superior */
+BorderPane > HBox > Label:nth-child(3) {
+    -fx-font-size: 14px !important;
+    -fx-text-fill: rgba(255,255,255,0.95) !important;
+    -fx-font-weight: 500 !important;
+    -fx-padding: 6px 15px !important;
+    -fx-background-color: rgba(255,255,255,0.15) !important;
+    -fx-background-radius: 20px !important;
+    -fx-border-color: rgba(217, 119, 6, 0.3) !important;
+    -fx-border-width: 1px !important;
+    -fx-border-radius: 20px !important;
+}
+
+/* Botón cerrar sesión */
+BorderPane > HBox > Button {
+    -fx-font-size: 14px !important;
+    -fx-font-weight: 600 !important;
+    -fx-text-fill: white !important;
+    -fx-background-color: transparent !important;
+    -fx-border-color: rgba(255,255,255,0.4) !important;
+    -fx-border-width: 1.5px !important;
+    -fx-border-radius: 20px !important;
+    -fx-padding: 8px 24px !important;
+    -fx-cursor: hand;
+    -fx-background-radius: 20px !important;
+}
+
+BorderPane > HBox > Button:hover {
+    -fx-background-color: rgba(255,255,255,0.15) !important;
+    -fx-border-color: rgba(255,255,255,0.8) !important;
+    -fx-border-width: 2px !important;
+}
+
+/* Contenido central (ScrollPane con VBox) */
+BorderPane > ScrollPane {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-padding: 0;
+}
+
+BorderPane > ScrollPane > .viewport {
+    -fx-background-color: transparent;
+}
+
+BorderPane > ScrollPane > .viewport > VBox {
+    -fx-background-color: transparent;
+    -fx-padding: 50px 40px !important;
+    -fx-spacing: 30px;
+    -fx-alignment: top-center;
+}
+
+/* Título de bienvenida */
+BorderPane > ScrollPane > .viewport > VBox > Label:first-child {
+    -fx-font-size: 32px !important;
+    -fx-font-weight: 900 !important;
+    -fx-text-fill: -primary-color !important;
+    -fx-padding: 0 0 10px 0;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 2, 0, 0, 1);
+}
+
+/* Subtítulo */
+BorderPane > ScrollPane > .viewport > VBox > Label:nth-child(2) {
+    -fx-font-size: 16px !important;
+    -fx-text-fill: -text-light !important;
+    -fx-padding: 0 0 40px 0;
+    -fx-font-weight: 400 !important;
+}
+
+/* Panel de botones (VBox dentro del VBox principal) */
+BorderPane > ScrollPane > .viewport > VBox > VBox {
+    -fx-background-color: transparent !important;
+    -fx-padding: 30px !important;
+    -fx-spacing: 20px !important;
+    -fx-alignment: center !important;
+    -fx-background-radius: -radius-lg !important;
+    -fx-border-radius: -radius-lg !important;
+    -fx-border-color: rgba(217, 119, 6, 0.1) !important;
+    -fx-border-width: 1px !important;
+    -fx-background-color: white !important;
+    -fx-effect: -shadow-lg !important;
+    -fx-max-width: 800px !important;
+}
+
+/* ============================================
+   BOTONES ESPECÍFICOS POR ROL
+   ============================================ */
+
+/* Todos los botones en el panel de acciones */
+BorderPane > ScrollPane > .viewport > VBox > VBox > Button {
+    -fx-font-size: 15px !important;
+    -fx-font-weight: 700 !important;
+    -fx-text-fill: white !important;
+    -fx-background-radius: -radius-sm !important;
+    -fx-border-radius: -radius-sm !important;
+    -fx-pref-width: 300px !important;
+    -fx-pref-height: 56px !important;
+    -fx-cursor: hand;
+    -fx-effect: -shadow-md !important;
+    -fx-padding: 0 25px !important;
+    -fx-border-color: rgba(255,255,255,0.2) !important;
+    -fx-border-width: 1px !important;
+    -fx-transition: -transition-normal;
+}
+
+/* Efecto hover para todos los botones */
+BorderPane > ScrollPane > .viewport > VBox > VBox > Button:hover {
+    -fx-effect: -shadow-lg !important;
+    -fx-translate-y: -2px;
+    -fx-border-color: rgba(255,255,255,0.4) !important;
+}
+
+/* Efecto pressed para todos los botones */
+BorderPane > ScrollPane > .viewport > VBox > VBox > Button:pressed {
+    -fx-effect: -shadow-sm !important;
+    -fx-translate-y: 1px;
+}
+
+/* Botones ADMIN (morado premium) */
+BorderPane > ScrollPane > .viewport > VBox > VBox > Button {
+    -fx-background-color: linear-gradient(135deg, #7C3AED 0%, #4F46E5 100%) !important;
+}
+
+BorderPane > ScrollPane > .viewport > VBox > VBox > Button:hover {
+    -fx-background-color: linear-gradient(135deg, #6D28D9 0%, #4338CA 100%) !important;
+}
+
+/* Botones GERENTE (verde esmeralda) */
+BorderPane > ScrollPane > .viewport > VBox > VBox > Button:nth-child(2),
+BorderPane > ScrollPane > .viewport > VBox > VBox > Button:nth-child(3),
+BorderPane > ScrollPane > .viewport > VBox > VBox > Button:nth-child(4) {
+    -fx-background-color: linear-gradient(135deg, #059669 0%, #10B981 100%) !important;
+}
+
+BorderPane > ScrollPane > .viewport > VBox > VBox > Button:nth-child(2):hover,
+BorderPane > ScrollPane > .viewport > VBox > VBox > Button:nth-child(3):hover,
+BorderPane > ScrollPane > .viewport > VBox > VBox > Button:nth-child(4):hover {
+    -fx-background-color: linear-gradient(135deg, #047857 0%, #0DA573 100%) !important;
+}
+
+/* Botones MECÁNICO (naranja energía) */
+BorderPane > ScrollPane > .viewport > VBox > VBox > Button:nth-child(5),
+BorderPane > ScrollPane > .viewport > VBox > VBox > Button:nth-child(6) {
+    -fx-background-color: linear-gradient(135deg, #EA580C 0%, #F97316 100%) !important;
+}
+
+BorderPane > ScrollPane > .viewport > VBox > VBox > Button:nth-child(5):hover,
+BorderPane > ScrollPane > .viewport > VBox > VBox > Button:nth-child(6):hover {
+    -fx-background-color: linear-gradient(135deg, #C2410C 0%, #EA580C 100%) !important;
+}
+
+/* Botones VENDEDOR (azul corporativo) */
+BorderPane > ScrollPane > .viewport > VBox > VBox > Button:nth-child(7),
+BorderPane > ScrollPane > .viewport > VBox > VBox > Button:nth-child(8),
+BorderPane > ScrollPane > .viewport > VBox > VBox > Button:nth-child(9) {
+    -fx-background-color: linear-gradient(135deg, #1D4ED8 0%, #3B82F6 100%) !important;
+}
+
+BorderPane > ScrollPane > .viewport > VBox > VBox > Button:nth-child(7):hover,
+BorderPane > ScrollPane > .viewport > VBox > VBox > Button:nth-child(8):hover,
+BorderPane > ScrollPane > .viewport > VBox > VBox > Button:nth-child(9):hover {
+    -fx-background-color: linear-gradient(135deg, #1E40AF 0%, #2563EB 100%) !important;
+}
+
+/* ============================================
+   SCROLLBAR PERSONALIZADO
+   ============================================ */
+ScrollPane .scroll-bar:vertical {
+    -fx-background-color: transparent;
+    -fx-pref-width: 10px;
+}
+
+ScrollPane .scroll-bar:vertical .track {
+    -fx-background-color: rgba(0,0,0,0.05);
+    -fx-background-radius: 5px;
+}
+
+ScrollPane .scroll-bar:vertical .thumb {
+    -fx-background-color: rgba(30, 58, 138, 0.3);
+    -fx-background-radius: 5px;
+}
+
+ScrollPane .scroll-bar:vertical .thumb:hover {
+    -fx-background-color: rgba(30, 58, 138, 0.5);
+}
+
+ScrollPane .scroll-bar .increment-button,
+ScrollPane .scroll-bar .decrement-button {
+    -fx-pref-height: 0;
+    -fx-opacity: 0;
+}
+
+/* ============================================
+   EFECTOS ESPECIALES Y ANIMACIONES
+   ============================================ */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        translate-y: 20px;
+    }
+    to {
+        opacity: 1;
+        translate-y: 0;
+    }
+}
+
+BorderPane > ScrollPane > .viewport > VBox > VBox {
+    -fx-animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes pulse {
+    0% { -fx-effect: -shadow-md; }
+    50% { -fx-effect: -shadow-lg; }
+    100% { -fx-effect: -shadow-md; }
+}
+
+BorderPane > HBox > Label:first-child {
+    -fx-animation: pulse 3s infinite;
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+@media (max-width: 768px) {
+    BorderPane > ScrollPane > .viewport > VBox > VBox > Button {
+        -fx-pref-width: 260px !important;
+        -fx-pref-height: 52px !important;
+        -fx-font-size: 14px !important;
+    }
+
+    BorderPane > HBox {
+        -fx-padding: 15px 20px !important;
+        -fx-spacing: 15px;
+    }
+
+    BorderPane > HBox > Label:first-child {
+        -fx-font-size: 18px !important;
+    }
+}
+
+/* ============================================
+   ESTADOS ESPECIALES
+   ============================================ */
+.disabled-button {
+    -fx-opacity: 0.6;
+    -fx-cursor: default;
+}
+
+.disabled-button:hover {
+    -fx-translate-y: 0 !important;
+    -fx-effect: -shadow-md !important;
+}
+
+/* Badge para estado activo */
+.status-badge {
+    -fx-font-size: 11px !important;
+    -fx-font-weight: 700 !important;
+    -fx-padding: 3px 10px !important;
+    -fx-background-radius: 10px !important;
+    -fx-border-radius: 10px !important;
+    -fx-text-fill: white !important;
+}
+
+.status-active {
+    -fx-background-color: #10B981 !important;
+}
+
+.status-inactive {
+    -fx-background-color: #6B7280 !important;
+}
+
+/* Tooltip profesional */
+.tooltip {
+    -fx-background-color: #1F2937;
+    -fx-text-fill: white;
+    -fx-background-radius: -radius-sm;
+    -fx-padding: 8px 12px;
+    -fx-font-size: 12px;
+    -fx-effect: -shadow-lg;
+}
+
+/* Separador elegante */
+.separator > .line {
+    -fx-border-color: linear-gradient(to right, transparent, rgba(217, 119, 6, 0.3), transparent);
+    -fx-border-width: 1px;
+}

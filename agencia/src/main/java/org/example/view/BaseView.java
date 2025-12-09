@@ -19,8 +19,22 @@ public abstract class BaseView {
         this.controlador = controlador;
         this.empleadoActual = empleado;
         crearVistaBase();
+        aplicarEstilosBase();
         crearBotonesEspecificos();
         mostrarContenido();
+
+    }
+
+    protected void aplicarEstilosBase() {
+        try {
+            panelRaiz.getStylesheets().add(
+                    getClass().getResource("/styles/estilos.css").toExternalForm()
+            );
+        } catch (Exception e) {
+            System.err.println("Error cargando CSS: " + e.getMessage());
+        }
+
+        panelRaiz.getStyleClass().add("main-container");
     }
 
     protected void crearVistaBase() {
@@ -30,8 +44,10 @@ public abstract class BaseView {
         HBox barraSuperior = new HBox(10);
         barraSuperior.setPadding(new Insets(10));
         barraSuperior.setAlignment(Pos.CENTER_LEFT);
+        barraSuperior.getStyleClass().add("top-bar");
 
         Label titulo = new Label("Sistema Agencia de Autos - " + empleadoActual.getPuesto());
+        titulo.getStyleClass().add("top-bar-title");
 
         Region espaciador = new Region();
         HBox.setHgrow(espaciador, Priority.ALWAYS);
@@ -43,6 +59,7 @@ public abstract class BaseView {
             Stage stageActual = (Stage) ((Button) e.getSource()).getScene().getWindow();
             controlador.cerrarSesion(stageActual);
         });
+        botonCerrarSesion.getStyleClass().add("logout-button");
 
         barraSuperior.getChildren().addAll(titulo, espaciador, etiquetaUsuario, botonCerrarSesion);
         panelRaiz.setTop(barraSuperior);
@@ -60,8 +77,10 @@ public abstract class BaseView {
 
     protected void mostrarContenido() {
         Label tituloBienvenida = new Label("Bienvenido, " + empleadoActual.getNombreCompleto());
+        tituloBienvenida.getStyleClass().add("welcome-title");
 
         Label subtitulo = new Label("Seleccione una opción:");
+        subtitulo.getStyleClass().add("welcome-subtitle");
 
         VBox contenido = new VBox(10);
         contenido.setAlignment(Pos.CENTER);
