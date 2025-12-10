@@ -1,8 +1,15 @@
 package org.example.model;
 
+import javafx.scene.image.Image;
+import java.io.ByteArrayInputStream;
+import java.sql.Blob;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.sql.Blob;
+import javax.sql.rowset.serial.SerialBlob;
 
 public class Vehiculo {
     private String idVehiculo;
@@ -268,6 +275,29 @@ public class Vehiculo {
         if (isReservado()) return "Reservado";
         if (isEnMantenimiento()) return "En Mantenimiento";
         return estadoVehiculo;
+    }
+
+    public void cargarFotoDesdeArchivo(File archivo) throws IOException {
+        if (archivo != null && archivo.exists()) {
+            try (FileInputStream fis = new FileInputStream(archivo)) {
+                byte[] bytes = fis.readAllBytes();
+                this.foto = new SerialBlob(bytes);
+            } catch (Exception e) {
+                throw new IOException("Error al crear SerialBlob: " + e.getMessage(), e);
+            }
+        }
+    }
+
+    public Image getFotoComoImage() {
+        if (foto != null) {
+            try {
+                byte[] bytes = foto.getBytes(1, (int) foto.length());
+                return new Image(new ByteArrayInputStream(bytes));
+            } catch (Exception e) {
+                System.err.println("Error al convertir foto: " + e.getMessage());
+            }
+        }
+        return null;
     }
 
     @Override

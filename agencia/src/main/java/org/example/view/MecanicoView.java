@@ -1,5 +1,6 @@
 package org.example.view;
 
+import javafx.stage.Stage;
 import org.example.controller.LoginController;
 import org.example.model.Empleado;
 import javafx.scene.control.Button;
@@ -17,7 +18,11 @@ public class MecanicoView extends BaseView {
         Button btnRegistrarVehiculo = crearBotonGrande("Registrar Vehículo");
         btnRegistrarVehiculo.getStyleClass().add("mecanico-button");
         btnRegistrarVehiculo.setOnAction(e -> {
-            System.out.println("MECANICO: Registrar vehículo clickeado");
+            Stage stageActual = (Stage) btnRegistrarVehiculo.getScene().getWindow();
+            stageActual.close();
+            Stage nuevaVentana = new Stage();
+            RegistroVehiculoView vistaRegistro = new RegistroVehiculoView(nuevaVentana, empleadoActual);
+            nuevaVentana.show();
         });
 
         Button btnRegistrarMantenimiento = crearBotonGrande("Registrar Mantenimiento");
