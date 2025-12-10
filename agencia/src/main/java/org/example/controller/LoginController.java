@@ -52,6 +52,9 @@ public class LoginController {
             case "VENDEDOR":
                 mostrarVentanaVendedor(empleado, ventanaPrincipal);
                 break;
+            case "RH":                 // NUEVO
+                mostrarVentanaRH(empleado, ventanaPrincipal);
+                break;
             default:
                 System.err.println("Nivel no reconocido: " + empleado.getPuesto());
                 mostrarVentanaVendedor(empleado, ventanaPrincipal);
@@ -87,6 +90,12 @@ public class LoginController {
         stage.setTitle(title);
         stage.setResizable(false);
         stage.show();
+    }
+
+    private void mostrarVentanaRH(Empleado empleado, Stage stage) {
+        RHView vistaRH = new RHView(this, empleado);
+        Scene escena = new Scene(vistaRH.getRoot(), 800, 600);
+        configurarVentana(stage, escena, "Recursos Humanos - " + empleado.getNombreCompleto());
     }
 
     public void cerrarSesion(Stage stageActual) {
