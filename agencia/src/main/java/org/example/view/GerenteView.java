@@ -1,5 +1,6 @@
 package org.example.view;
 
+import javafx.stage.Stage;
 import org.example.controller.LoginController;
 import org.example.model.Empleado;
 import javafx.scene.control.Button;
@@ -32,6 +33,26 @@ public class GerenteView extends BaseView {
             System.out.println("GERENTE: Configurar precios clickeado");
         });
 
-        panelBotones.getChildren().addAll(btnConsultarInventario, btnGestionarCliente, btnConfigurarPrecios);
+        Button btnAgregarProveedor = crearBotonGrande("Agregar Proveedor");
+        btnAgregarProveedor.getStyleClass().add("gerente-button");
+        btnAgregarProveedor.setOnAction(e -> {
+            Stage stageActual = (Stage) btnAgregarProveedor.getScene().getWindow();
+            stageActual.close();
+            Stage nuevaVentana = new Stage();
+            AgregarProveedorView vistaProveedor = new AgregarProveedorView(nuevaVentana, empleadoActual);
+            nuevaVentana.show();
+        });
+
+        Button btnAgregarDocumento = crearBotonGrande("Agregar Documentos");
+        btnAgregarDocumento.getStyleClass().add("gerente-button");
+        btnAgregarDocumento.setOnAction(e -> {
+            Stage stageActual = (Stage) btnAgregarDocumento.getScene().getWindow();
+            stageActual.close();
+            Stage nuevaVentana = new Stage();
+            AgregarDocumentoView vistaDocumento = new AgregarDocumentoView(nuevaVentana, empleadoActual);
+            nuevaVentana.show();
+        });
+
+        panelBotones.getChildren().addAll(btnConsultarInventario, btnGestionarCliente, btnConfigurarPrecios,btnAgregarProveedor,btnAgregarDocumento);
     }
 }
