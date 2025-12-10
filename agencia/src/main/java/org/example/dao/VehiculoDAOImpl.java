@@ -70,7 +70,7 @@ public class VehiculoDAOImpl implements VehiculoDAO {
             return false;
         }
     }
-
+//LOL
     @Override
     public Vehiculo buscarPorId(String idVehiculo) {
         String sql = "SELECT * FROM vehiculo WHERE idVehiculo = ?";
