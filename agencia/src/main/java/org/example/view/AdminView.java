@@ -1,5 +1,6 @@
 package org.example.view;
 
+import javafx.stage.Stage;
 import org.example.controller.LoginController;
 import org.example.model.Empleado;
 import javafx.scene.control.Button;
@@ -18,19 +19,34 @@ public class AdminView extends BaseView {
         Button btnRegistrarUsuario = crearBotonGrande("Registrar Usuario");
         btnRegistrarUsuario.getStyleClass().add("admin-button");
         btnRegistrarUsuario.setOnAction(e -> {
-            System.out.println("ADMIN: Registrar usuario clickeado");
+            Stage stageActual = (Stage) btnRegistrarUsuario.getScene().getWindow();
+            stageActual.close();
+
+            Stage nuevaVentana = new Stage();
+            AgregarUsuarioView vistaAgregar = new AgregarUsuarioView(nuevaVentana);
+            nuevaVentana.show();
         });
 
         Button btnEditarUsuario = crearBotonGrande("Editar Usuario");
         btnEditarUsuario.getStyleClass().add("admin-button");
         btnEditarUsuario.setOnAction(e -> {
-            System.out.println("ADMIN: Editar usuario clickeado");
+            Stage stageActual = (Stage) btnEditarUsuario.getScene().getWindow();
+            stageActual.close();
+
+            Stage nuevaVentana = new Stage();
+            EditarUsuarioView vistaEditar = new EditarUsuarioView(nuevaVentana);
+            nuevaVentana.show();
         });
 
         Button btnDarBajaUsuario = crearBotonGrande("Dar de Baja Usuario");
         btnDarBajaUsuario.getStyleClass().add("admin-button");
         btnDarBajaUsuario.setOnAction(e -> {
-            System.out.println("ADMIN: Dar baja usuario clickeado");
+            Stage stageActual = (Stage) btnDarBajaUsuario.getScene().getWindow();
+            stageActual.close();
+
+            Stage nuevaVentana = new Stage();
+            EliminarUsuarioView vistaEliminar = new EliminarUsuarioView(nuevaVentana);
+            nuevaVentana.show();
         });
 
         panelBotones.getChildren().addAll(btnRegistrarUsuario, btnEditarUsuario, btnDarBajaUsuario);

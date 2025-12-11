@@ -125,13 +125,21 @@ public class AgregarEmpleadoView {
         botonRegistrar.setStyle("-fx-font-weight: bold; -fx-padding: 10 25;");
         botonRegistrar.setOnAction(e -> procesarRegistro());
 
+        Button botonRegistrarYLimpiar = new Button("Registrar y Nuevo");
+        botonRegistrarYLimpiar.setStyle("-fx-font-weight: bold; -fx-padding: 10 25; -fx-background-color: #28a745; -fx-text-fill: white;");
+        botonRegistrarYLimpiar.setOnAction(e -> {
+            if (procesarRegistroConExito()) {
+                limpiarFormulario();
+            }
+        });
+
         Button botonCancelar = new Button("Cancelar");
         botonCancelar.setOnAction(e -> stage.close());
 
         Button botonLimpiar = new Button("Limpiar");
         botonLimpiar.setOnAction(e -> limpiarFormulario());
 
-        panelBotones.getChildren().addAll(botonRegistrar, botonLimpiar, botonCancelar);
+        panelBotones.getChildren().addAll(botonRegistrar, botonRegistrarYLimpiar, botonLimpiar, botonCancelar);
         GridPane.setConstraints(panelBotones, 0, fila + 1, 2, 1);
 
         panelRaiz.getChildren().addAll(titulo, panelBotones);
@@ -150,7 +158,7 @@ public class AgregarEmpleadoView {
         }
     }
 
-    private void procesarRegistro() {
+    private boolean procesarRegistroConExito() {
         try {
             TextField campoIdEmpleado = (TextField) panelRaiz.lookup("#idEmpleado");
             TextField campoNombre = (TextField) panelRaiz.lookup("#nombre");
@@ -166,19 +174,19 @@ public class AgregarEmpleadoView {
             if (campoIdEmpleado.getText().trim().isEmpty()) {
                 mostrarError("ID Empleado es obligatorio");
                 campoIdEmpleado.requestFocus();
-                return;
+                return false;
             }
 
             if (campoNombre.getText().trim().isEmpty()) {
                 mostrarError("Nombre es obligatorio");
                 campoNombre.requestFocus();
-                return;
+                return false;
             }
 
             if (campoApellidoPaterno.getText().trim().isEmpty()) {
                 mostrarError("Apellido Paterno es obligatorio");
                 campoApellidoPaterno.requestFocus();
-                return;
+                return false;
             }
 
             BigDecimal salario = campoSalario.getText().isEmpty() ?
@@ -204,26 +212,72 @@ public class AgregarEmpleadoView {
             );
 
             if (exito) {
-                stage.close();
+                mostrarMensajeExito("Empleado registrado correctamente.");
+                return true;
+            } else {
+                mostrarError("No se pudo registrar el empleado");
+                return false;
             }
 
         } catch (NumberFormatException e) {
             mostrarError("Formato de salario inválido. Use números con punto decimal");
+            return false;
         } catch (Exception e) {
             mostrarError("Error: " + e.getMessage());
             e.printStackTrace();
+            return false;
+        }
+    }
+
+    private void procesarRegistro() {
+        if (procesarRegistroConExito()) {
+            // Opcional: Puedes dejar que el usuario decida si cerrar o no
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Registro Exitoso");
+            alert.setHeaderText(null);
+            alert.setContentText("¿Desea registrar otro empleado?");
+
+            ButtonType btnSi = new ButtonType("Sí, registrar otro");
+            ButtonType btnNo = new ButtonType("No, cerrar");
+            alert.getButtonTypes().setAll(btnSi, btnNo);
+
+            alert.showAndWait().ifPresent(respuesta -> {
+                if (respuesta == btnSi) {
+                    limpiarFormulario();
+                } else {
+                    stage.close();
+                }
+            });
         }
     }
 
     private void limpiarFormulario() {
-        for (javafx.scene.Node node : panelRaiz.getChildren()) {
-            if (node instanceof TextField) {
-                ((TextField) node).clear();
-            } else if (node instanceof ComboBox) {
-                ((ComboBox<?>) node).setValue(null);
-            } else if (node instanceof DatePicker) {
-                ((DatePicker) node).setValue(LocalDate.now());
-            }
+        // Limpiar solo los campos que deben ser llenados de nuevo
+        TextField campoIdEmpleado = (TextField) panelRaiz.lookup("#idEmpleado");
+        TextField campoNombre = (TextField) panelRaiz.lookup("#nombre");
+        TextField campoApellidoPaterno = (TextField) panelRaiz.lookup("#apellidoPaterno");
+        TextField campoApellidoMaterno = (TextField) panelRaiz.lookup("#apellidoMaterno");
+        TextField campoTelefono = (TextField) panelRaiz.lookup("#telefono");
+        TextField campoEmail = (TextField) panelRaiz.lookup("#email");
+        TextField campoSalario = (TextField) panelRaiz.lookup("#salario");
+
+        if (campoIdEmpleado != null) campoIdEmpleado.clear();
+        if (campoNombre != null) campoNombre.clear();
+        if (campoApellidoPaterno != null) campoApellidoPaterno.clear();
+        if (campoApellidoMaterno != null) campoApellidoMaterno.clear();
+        if (campoTelefono != null) campoTelefono.clear();
+        if (campoEmail != null) campoEmail.clear();
+        if (campoSalario != null) campoSalario.clear();
+
+        // Mantener valores por defecto
+        ComboBox<String> comboPuesto = (ComboBox<String>) panelRaiz.lookup("#puesto");
+        if (comboPuesto != null) {
+            comboPuesto.setValue(null);
+        }
+
+        DatePicker selectorFechaContratacion = (DatePicker) panelRaiz.lookup("#fechaContratacion");
+        if (selectorFechaContratacion != null) {
+            selectorFechaContratacion.setValue(LocalDate.now());
         }
 
         ComboBox<String> comboEstado = (ComboBox<String>) panelRaiz.lookup("#estado");
@@ -231,15 +285,24 @@ public class AgregarEmpleadoView {
             comboEstado.setValue("A (Activo)");
         }
 
-        DatePicker selectorFecha = (DatePicker) panelRaiz.lookup("#fechaContratacion");
-        if (selectorFecha != null) {
-            selectorFecha.setValue(LocalDate.now());
+        // Enfocar el primer campo para nuevo registro
+        if (campoIdEmpleado != null) {
+            campoIdEmpleado.requestFocus();
         }
     }
 
     private void mostrarError(String mensaje) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error de Validación");
+        alert.setHeaderText(null);
+        alert.setContentText(mensaje);
+        alert.initOwner(stage);
+        alert.showAndWait();
+    }
+
+    private void mostrarMensajeExito(String mensaje) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Registro Exitoso");
         alert.setHeaderText(null);
         alert.setContentText(mensaje);
         alert.initOwner(stage);

@@ -13,27 +13,33 @@ public class EmpleadoDAOImpl implements EmpleadoDAO {
 
     @Override
     public Empleado autenticar(String usuario, String contrasena) {
-        String sql = """
-            SELECT e.*, u.nivel 
-            FROM usuario u 
-            INNER JOIN empleado e ON u.idEmpleado = e.idEmpleado 
-            WHERE u.username = ? AND u.contraseña = ? AND e.estado = ?
-            """;
+        System.out.println("=== DEBUG DAO ===");
+        System.out.println("Usuario: " + usuario);
+        System.out.println("Contraseña recibida: " + contrasena);
+
+        String sql = "SELECT e.*, u.nivel FROM usuario u INNER JOIN empleado e ON u.idEmpleado = e.idEmpleado WHERE u.username = ? AND u.contraseña = ? AND e.estado = 'A'";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, usuario);
             stmt.setString(2, contrasena);
-            stmt.setString(3, Constantes.ESTADO_ACTIVO);
+
+            System.out.println("SQL: " + stmt.toString());
 
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
+                System.out.println("USUARIO ENCONTRADO EN BD");
                 return mapearEmpleado(rs);
+            } else {
+                System.out.println("NO SE ENCONTRÓ EN BD");
+                String checkSql = "SELECT username, contraseña FROM usuario WHERE username = ?";
+                PreparedStatement checkStmt = conn.prepareStatement(checkSql);
+                checkStmt.setString(1, usuario);
+                ResultSet checkRs = checkStmt.executeQuery();
             }
         } catch (SQLException e) {
-            System.err.println("Error en autenticación DAO: " + e.getMessage());
-            e.printStackTrace();
+            System.err.println("Error: " + e.getMessage());
         }
         return null;
     }

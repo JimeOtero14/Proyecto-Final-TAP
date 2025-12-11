@@ -1,5 +1,6 @@
 package org.example.view;
 
+import javafx.stage.Stage;
 import org.example.controller.LoginController;
 import org.example.model.Empleado;
 import javafx.scene.control.Button;
@@ -17,14 +18,23 @@ public class VendedorView extends BaseView {
         Button btnConsultarInventario = crearBotonGrande("Consultar Inventario");
         btnConsultarInventario.getStyleClass().add("vendedor-button");
         btnConsultarInventario.setOnAction(e -> {
-            System.out.println("VENDEDOR: Consultar inventario clickeado");
+            Stage stageActual = (Stage) btnConsultarInventario.getScene().getWindow();
+            stageActual.close();
+            Stage nuevaVentana = new Stage();
+            InventarioView vistaInventario = new InventarioView(nuevaVentana, false); // false = es vendedor
+            nuevaVentana.show();
         });
 
-        Button btnGestionarCliente = crearBotonGrande("Gestionar Cliente");
-        btnGestionarCliente.getStyleClass().add("vendedor-button");
-        btnGestionarCliente.setOnAction(e -> {
-            System.out.println("VENDEDOR: Gestionar cliente clickeado");
+        Button btnConsultarClientes = crearBotonGrande("Consultar Clientes");
+        btnConsultarClientes.getStyleClass().add("vendedor-button");
+        btnConsultarClientes.setOnAction(e -> {
+            Stage stageActual = (Stage) btnConsultarClientes.getScene().getWindow();
+            stageActual.close();
+            Stage nuevaVentana = new Stage();
+            ConsultarClientesView vistaClientes = new ConsultarClientesView(nuevaVentana, false); // false = no es gerente
+            nuevaVentana.show();
         });
+
 
         Button btnProcesarVenta = crearBotonGrande("Procesar Venta");
         btnProcesarVenta.getStyleClass().add("vendedor-button");
@@ -32,6 +42,6 @@ public class VendedorView extends BaseView {
             System.out.println("VENDEDOR: Procesar venta clickeado");
         });
 
-        panelBotones.getChildren().addAll(btnConsultarInventario, btnGestionarCliente, btnProcesarVenta);
+        panelBotones.getChildren().addAll(btnConsultarInventario, btnConsultarClientes, btnProcesarVenta);
     }
 }

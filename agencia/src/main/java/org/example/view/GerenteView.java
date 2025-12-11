@@ -18,13 +18,31 @@ public class GerenteView extends BaseView {
         Button btnConsultarInventario = crearBotonGrande("Consultar Inventario");
         btnConsultarInventario.getStyleClass().add("gerente-button");
         btnConsultarInventario.setOnAction(e -> {
-            System.out.println("GERENTE: Consultar inventario clickeado");
+            Stage stageActual = (Stage) btnConsultarInventario.getScene().getWindow();
+            stageActual.close();
+            Stage nuevaVentana = new Stage();
+            InventarioView vistaInventario = new InventarioView(nuevaVentana, true); // true = es gerente
+            nuevaVentana.show();
         });
 
-        Button btnGestionarCliente = crearBotonGrande("Gestionar Cliente");
+        Button btnGestionarCliente = crearBotonGrande("Gestionar Clientes");
         btnGestionarCliente.getStyleClass().add("gerente-button");
         btnGestionarCliente.setOnAction(e -> {
-            System.out.println("GERENTE: Gestionar cliente clickeado");
+            Stage stageActual = (Stage) btnGestionarCliente.getScene().getWindow();
+            stageActual.close();
+            Stage nuevaVentana = new Stage();
+            ConsultarClientesView vistaClientes = new ConsultarClientesView(nuevaVentana, true); // true = es gerente
+            nuevaVentana.show();
+        });
+
+        Button btnAgregarCliente = crearBotonGrande("Agregar Cliente");
+        btnAgregarCliente.getStyleClass().add("gerente-button");
+        btnAgregarCliente.setOnAction(e -> {
+            Stage stageActual = (Stage) btnAgregarCliente.getScene().getWindow();
+            stageActual.close();
+            Stage nuevaVentana = new Stage();
+            AgregarClienteView vistaAgregar = new AgregarClienteView(nuevaVentana, empleadoActual);
+            nuevaVentana.show();
         });
 
         Button btnConfigurarPrecios = crearBotonGrande("Configurar Precios");
@@ -53,6 +71,6 @@ public class GerenteView extends BaseView {
             nuevaVentana.show();
         });
 
-        panelBotones.getChildren().addAll(btnConsultarInventario, btnGestionarCliente, btnConfigurarPrecios,btnAgregarProveedor,btnAgregarDocumento);
+        panelBotones.getChildren().addAll(btnConsultarInventario, btnGestionarCliente, btnAgregarCliente, btnConfigurarPrecios,btnAgregarProveedor,btnAgregarDocumento);
     }
 }
